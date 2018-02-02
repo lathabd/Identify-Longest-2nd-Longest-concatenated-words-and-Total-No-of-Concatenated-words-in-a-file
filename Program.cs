@@ -28,13 +28,20 @@ namespace IntProj1
 
             MessageBox.Show("LongestWord:"+longest+"\r\n second Longest Word:"+secondLongestWord+"\r\n Total No Of ConcatWords:"+totalNoOfConcWords);
         }
+        
+        //Method to find out the longest word
         public static string FindLongestWords(string[] listOfWords)
         {
             if (listOfWords == null) throw new ArgumentException("listOfWords");
+            
+            //Order in descending order to speed up the process of finding longest word
             var sortedWords = listOfWords.OrderByDescending(word => word.Length).ToList();
+            
+            //creating a hashset for the sorted words
             var dict = new HashSet<String>(sortedWords);
             foreach (var word in sortedWords)
             {
+                //Checking wether word is made up of the words in the hashset or not 
                 if (isMadeOfWords(word, dict))
                 {
                     return word;
@@ -43,6 +50,7 @@ namespace IntProj1
             return null;
         }
 
+        //Method to Check wether word is made up of the words in the hashset or not 
         private static bool isMadeOfWords(string word, HashSet<string> dict)
         {
             if (String.IsNullOrEmpty(word)) return false;
@@ -51,8 +59,10 @@ namespace IntProj1
                 if (dict.Contains(word)) return true;
                 else return false;
             }
+            //Generate possible combinations of sub-words in word
             foreach (var pair in generatePairs(word))
             {
+                //check wether the strings in the pair is part of the hashset
                 if (dict.Contains(pair.Item1))
                 {
                     if (dict.Contains(pair.Item2))
@@ -68,6 +78,7 @@ namespace IntProj1
             return false;
         }
 
+        //Split word length wise to create possible combination of sub-words and return as pair of strings
         private static List<Tuple<string, string>> generatePairs(string word)
         {
             var output = new List<Tuple<string, string>>();
@@ -77,7 +88,9 @@ namespace IntProj1
             }
             return output;
         }
-
+        
+        
+//Sam logic as FindLongestWords,included a counter to skip first longest word
         public static string FindSecondLongestWords(string[] listOfWords)
         {
             int concatinedWordCount = 0;
@@ -95,6 +108,8 @@ namespace IntProj1
             }
             return null;
         }
+        
+        //Sam logic as FindLongestWords,included a counter to keep track of concatinated words
         public static int GetAllConctWords(string[] listOfWords)
         {
             int concatinedWordCount = 0;
